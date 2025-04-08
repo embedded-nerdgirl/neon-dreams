@@ -12,7 +12,7 @@
 #     "name": "",
 #     "desc": "",
 #     "type": "",
-#     "attributes" : ""
+#     "attributes" : []
 #   }
 # }
 
