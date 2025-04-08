@@ -97,5 +97,5 @@ set_target_properties(NeonDreams PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 
-message(STATUS "NeonDreams has been compiled with all dependencies.")
+message(STATUS "NeonDreams has been setup with all dependencies.")
 message(STATUS "Remember to compile mruby before running!")
