@@ -1,0 +1,21 @@
+#### Notice of Codebase re-write ####
+
+It's April 10th, 2025. I've been goofing around heavily in C++ and some other
+nonsense, and I'll admit, this project has been very unfocused as of late. So,
+I will be moving all this current code into a dead branch and be re-writing the
+code, putting an increased focus on doing things one at a time. Trying to do a
+large amount of things all at once is *not* a good way to do things, and I did 
+just learn that here and now.
+
+This game will be a 2D A/J/RPG that's open-ended in nature, it will have all
+the same dependencies as before, I'm just redoing a lot of the code, I'll also
+be making the compile process more strict, and enforcing `snake_case` across
+the codebase as much as I can (external funcs I cannot control will break this)
+
+The docs will also stay the same, being updated ans expanded on as needed. A
+lot of systems will be entirely re-written, this time to maximize usability
+rather than my own laziness.
+
+This branch will be known as [ att1 ], the first attempt at writing this game.
+This branch will not be maintained or updated in any capacity, only [ main ]
+will continue to recieve updates and support.

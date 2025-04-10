@@ -20,14 +20,4 @@ class Item {
 
 };
 
-/*****************************************************************************/
-/* IMPLEMENTATION */
-Item::Item(int id, string asset, vector<string> info, vector<string> attrs) {
-
-}
-
-Item::~Item() {
-
-}
-
 #endif // item.hpp

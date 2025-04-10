@@ -21,6 +21,7 @@ Quest Editor:       CLI
 Item Packager:      CLI
 NPC Packager:       CLI
 Save Validator:     CLI
+Quest Packager:		CLI
 
 #### CUSTOM FILE ASSOCS ####
 Map Files:      *._scene
