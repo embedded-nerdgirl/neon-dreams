@@ -1,5 +1,5 @@
 $RELEASE = "release/"
-$BIN = "bin/release/net9.0/win-x64/"
+$BIN = "bin/release/net9.0/win-arm64/"
 $ASSETS = "assets/"
 
 # Lua 5.4 is required
@@ -18,7 +18,7 @@ Copy-Item -Path "$BIN*" -Destination $RELEASE -Recurse
 
 # Remove unnecessary files from the release directory
 Get-ChildItem -Path $RELEASE -Filter *.pdb -File | Remove-Item -Force
-lua54 manifest-tool.lua -maj 1 -min 1 -ptc 0 -stg PRE-ALPHA
+lua54 manifest-tool.lua -maj 1 -min 1 -ptc 6 -stg PRE-ALPHA
 Copy-Item -Path "manifest.json" -Destination $RELEASE
 Remove-Item -Path "manifest.json" -Confirm:$false
 Write-Host "NeonDreams build is ready."

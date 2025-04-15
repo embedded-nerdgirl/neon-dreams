@@ -143,7 +143,7 @@ namespace NeonDreams
                 plr.Update(dt);
                 Raylib.BeginDrawing();
                     Raylib.ClearBackground(Color.White);
-                    Raylib.DrawText("NeonDreams PreAlpha 1.1.0", 0, 10, 20, Color.Black);
+                    Raylib.DrawText("NeonDreams PreAlpha 1.1.6", 0, 10, 20, Color.Black);
                     Raylib.DrawFPS(0, 30);
                     plr.Draw();
                 Raylib.EndDrawing();

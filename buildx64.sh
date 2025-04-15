@@ -1,5 +1,6 @@
 #!/bin/bash
 # Lua 5.4 is required
+# Linux x64 only, arm64 is explicitly NOT in support
 
 set -e
 
