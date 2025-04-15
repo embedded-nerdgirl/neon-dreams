@@ -1,6 +1,6 @@
 # neon-dreams
 
-A JRPG written in C# with no true game engine. Due to not having **Steamworks** setup for this game, **Steamworks** does exist in the source code but remains mostly unused.
+A JRPG written in C# with no true game engine. Due to not having **Steamworks** setup for this game, **Steamworks** does exist in the source code and in the binary directory but remains mostly unused.
 
 # Dependencies
 
@@ -41,6 +41,8 @@ To modify the policy for `CurrentUser` or whichever you choose to modify, you ca
 
 For security reasons, `CurrentUser` or `UserPolicy` scopes are the best, it is **highly advised that you do not set `Bypass` to `MachinePolicy` as this is a massive security issue.**
 
+Build scripts for Batch will not be provided, Powershell is required.
+
 ## For Linux (x64)
 
 To build on Linux, you'll want to set the execution bit on the shell script.
@@ -54,6 +56,6 @@ From there, just run the shell script as one usually does and the project should
 
 To build on MacOS, you'll want to set the execution bit on the **command** script.
 
-> `chmod +x build_osx.command`
+> `chmod +x build_osx.sh`
 
 From there, just run the script as one usually does and the project should start building. If errors are encountered, feel free to fixup the script as you need.

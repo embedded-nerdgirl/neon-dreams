@@ -52,6 +52,8 @@ namespace NeonDreams
 
     public class Weapon : Item
     {
+        private uint WeaponDamage { get; set; }
+
         public Weapon(string? name, string? desc, uint id) : base(name, desc, id)
         {
 
@@ -60,6 +62,8 @@ namespace NeonDreams
 
     public class Armour : Item
     {
+        private uint ArmourDefense { get; set; }
+        private uint ArmourEquipSlot { get; set; }
         public Armour(string? name, string? desc, uint id) : base(name, desc, id)
         {
             
