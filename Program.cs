@@ -2,15 +2,52 @@
 using MoonSharp.Interpreter;
 using System;
 using System.IO;
+using System.Collections.Generic;
+
+// TODO: implement some kind of cmd-line flag to enable mods (disable by default)
 
 namespace NeonDreams
 {
     public class Program
     {
+        // Once we're aware that mods *can* exist (aka: ExternalLuaSelfTest = true)
+        // we can start scraping the directory for directories with init files and
+        // manifests to load.
+
+        // NOTE: mod load times will vary based on the size of the mod and the amount of dependencies.
+        internal static void CheckModDirectoryForMods()
+        {
+            string ModDirectory = @"assets/mods";
+            string[] FoundDirectories = Directory.GetDirectories(ModDirectory);
+            List<string> validModDirectories = new List<string>(); 
+
+            foreach (var dir in FoundDirectories)
+            {
+                // Hey we have directories, now we check if there's an init.lua
+                // and a manifest.json file, if yes, we pass this into a new
+                // string[] and continue before handoff to the mod manager.
+                bool HasInitLua = File.Exists(Path.Combine(dir, "init.lua"));
+                bool HasManifestJson = File.Exists(Path.Combine(dir, "manifest.json"));
+
+                if (HasInitLua && HasManifestJson)
+                {
+                    validModDirectories.Add(dir);
+                    Raylib.TraceLog(TraceLogLevel.Info, $"Found a mod in {dir}.");
+                }
+                else
+                {
+                    Raylib.TraceLog(TraceLogLevel.Error, $"A mod located at {dir} is invalid or corrupt.");
+                }
+            }
+
+            // Handoff code goes here, once manager code is written and not shite
+
+
+        }
+
         // This checks for a dummy file located at './assets/mods/template/init.lua'
-        // If it finds it and can run the code in there, we're good and ret 0
-        // Otherwise, it returns any int > 0, and then things are bad.
-        internal static bool ExternalLuaSelfTest()
+        // If it finds it and can run the code in there, we're good and ret true
+        private static bool ExternalLuaSelfTest()
         {
             string FileToCheck = "assets/mods/template/init.lua";
 
@@ -86,12 +123,17 @@ namespace NeonDreams
             bool IsInternalLuaOK = InternalLuaSelfTest();
 
             if (!IsModdedLuaOK)
-                Raylib.TraceLog(TraceLogLevel.Error, "Lua mods have been disabled for this session.");
+                Raylib.TraceLog(TraceLogLevel.Warning, "Lua mods have been disabled for this session.");
+            
+            CheckModDirectoryForMods();
             
             if (!IsInternalLuaOK)
                 Raylib.TraceLog(TraceLogLevel.Error, "Core Lua files are missing, the game may experience issues.");
+            
+            Raylib.TraceLog(TraceLogLevel.Info, "Core Lua appears healthy, loading...");
+            
 
-            Raylib.TraceLog(TraceLogLevel.Info, "Creating player...");
+            Raylib.TraceLog(TraceLogLevel.Info, "Starting rendering loop.");
             Player plr = new Player("Name");
 
             // Rendering loop
@@ -101,10 +143,16 @@ namespace NeonDreams
                 plr.Update(dt);
                 Raylib.BeginDrawing();
                     Raylib.ClearBackground(Color.White);
-                    Raylib.DrawFPS(0, 0);
+                    Raylib.DrawText("NeonDreams PreAlpha 1.1.0", 0, 10, 20, Color.Black);
+                    Raylib.DrawFPS(0, 30);
                     plr.Draw();
                 Raylib.EndDrawing();
             }
+
+            // Cleanup from the game and then closing things out
+            Raylib.CloseAudioDevice();
+            Raylib.CloseWindow();
+            Environment.Exit(0);
         }
     }
 }

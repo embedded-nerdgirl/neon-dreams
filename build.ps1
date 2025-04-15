@@ -5,7 +5,9 @@ $ASSETS = "assets/"
 # Lua 5.4 is required
 $ErrorActionPreference = "Stop"
 
-Remove-Item $RELEASE -Force -Recurse -Confirm:$false
+if (Test-Path $RELEASE) {
+    Remove-Item $RELEASE -Force -Recurse -Confirm:$false
+}
 
 dotnet build --ucr -c Release -v diag
 if (-not (Test-Path $RELEASE)) {
@@ -16,6 +18,7 @@ Copy-Item -Path "$BIN*" -Destination $RELEASE -Recurse
 
 # Remove unnecessary files from the release directory
 Get-ChildItem -Path $RELEASE -Filter *.pdb -File | Remove-Item -Force
-lua54 manifest-tool.lua -maj 1 -min 0 -ptc 1 -stg PRE-ALPHA
+lua54 manifest-tool.lua -maj 1 -min 1 -ptc 0 -stg PRE-ALPHA
 Copy-Item -Path "manifest.json" -Destination $RELEASE
+Remove-Item -Path "manifest.json" -Confirm:$false
 Write-Host "NeonDreams build is ready."

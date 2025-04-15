@@ -34,7 +34,7 @@ namespace NeonDreams
             if (Raylib.IsKeyDown(KeyboardKey.D) || Raylib.IsKeyDown(KeyboardKey.Right))
                 tempPos.X += Speed * DeltaTime;
 
-            PlayerPosition = tempPos;
+            PlayerPosition = tempPos;            
         }
 
         public void Draw()
