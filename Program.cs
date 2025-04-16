@@ -41,6 +41,7 @@ namespace NeonDreams
             }
 
             // Handoff code goes here, once manager code is written and not shite
+            // This is probably delayed now because of the item rewrite sstuff
 
         }
 

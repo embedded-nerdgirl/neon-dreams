@@ -19,7 +19,7 @@ cp -r ${BIN}* "$RELEASE"
 
 # Remove unnecessary files from the release directory
 find "$RELEASE" -type f -name "*.pdb" -exec rm -f {} \;
-lua54 manifest-tool.lua -maj 1 -min 1 -ptc 0 -stg PRE-ALPHA
+lua manifest-tool.lua -maj 1 -min 1 -ptc 0 -stg PRE-ALPHA
 cp manifest.json "$RELEASE"
 rm -f manifest.json
 echo "NeonDreams build is ready."

@@ -1,12 +1,13 @@
-# Lua 5.4 is required
-# Apple Silicon only!
+#!/bin/bash
+# Requires Lua 5.4
+# Apple Silicon only
 
-set -e
-
+set -e  # Exit on error
 RELEASE="release/"
 BIN="bin/release/net9.0/osx-arm64/"
 ASSETS="assets/"
-# Remove existing release directory if it exists
+
+# Clean up any previous release directory
 if [ -d "$RELEASE" ]; then
     rm -rf "$RELEASE"
 fi
@@ -14,11 +15,9 @@ fi
 dotnet build --ucr -c Release -v diag
 mkdir -p "$RELEASE"
 cp -r "$ASSETS" "$RELEASE"
-cp -r ${BIN}* "$RELEASE"
-
-# Remove unnecessary files from the release directory
+cp -r "${BIN}"* "$RELEASE"
 find "$RELEASE" -type f -name "*.pdb" -exec rm -f {} \;
-lua54 manifest-tool.lua -maj 1 -min 1 -ptc 0 -stg PRE-ALPHA
-cp manifest.json "$RELEASE"
-rm -f manifest.json
-echo "NeonDreams build is ready."
+
+lua manifest-tool.lua -maj 1 -min 1 -ptc 0 -stg PRE-ALPHA
+mv "manifest.json" "$RELEASE"
+echo "NeonDreams is ready."
