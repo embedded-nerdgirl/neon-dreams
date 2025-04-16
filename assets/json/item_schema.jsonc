@@ -1,0 +1,38 @@
+// This schema file is just a template for all item types in NeonDreams
+// This is not intended to be valid JSON as is, only templates :P
+
+/* Weapon Schema */
+{
+    "id": "",
+    "name": "",
+    "desc": "",
+    "base_attr": null,
+    "sellable": null,
+    "sell_value": null,
+    "damage": null,
+    "texture": "" /* path to texture: "./assets/sprites/weapons" */
+}
+
+/* Armour Schema */
+{
+    "id": "",
+    "name": "",
+    "desc": "",
+    "base_attr": null,
+    "sellable": null,
+    "sell_value": null,
+    "defense": null,
+    "equip_slot": null,
+    "texture": "" /* path to texture: "./assets/sprites/armour" */
+}
+
+/* Material Schema */
+{
+    "id": "",
+    "name": "",
+    "desc": "",
+    "base_attr": null,
+    "sellable": null,
+    "sell_value": null,
+    "texture": "" /* path to texture: "./assets/sprites/material" */
+}
