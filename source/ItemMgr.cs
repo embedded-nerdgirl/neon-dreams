@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using Raylib_cs;
 
 namespace NeonDreams
 {
@@ -13,33 +14,48 @@ namespace NeonDreams
         {
             if (!Directory.Exists(path))
             {
-                Console.WriteLine($"[ItemManager] Directory not found: {path}");
+                Raylib.TraceLog(TraceLogLevel.Error, $"[ItemManager] Directory not found: {path}");
                 return;
             }
 
-            // todo: refactor this ASAP!
-            var jsonFiles = Directory.GetFiles(path, "*.json");
-            foreach (var file in jsonFiles)
+            // Refactored! Huzzah!
+            foreach (var file in GetJSONFiles(path))
             {
-                try
-                {
-                    string json = File.ReadAllText(file);
-                    var itemData = JsonSerializer.Deserialize<ItemJsonSchema>(json);
+                TryLoadItemFromFile(file);
+            }
+        }
 
-                    if (itemData != null)
-                    {
-                        Item? item = CreateItemFromJson(itemData);
-                        if (item != null)
-                        {
-                            RegisteredItems[item.ItemIdentifier] = item;
-                            Console.WriteLine($"[ItemManager] Loaded item: {item.ItemName}");
-                        }
-                    }
-                }
-                catch (Exception ex)
+        private static IEnumerable<string> GetJSONFiles(string path)
+        {
+            return Directory.GetFiles(path, "*.json");
+        }
+
+        private static void TryLoadItemFromFile(string filePath)
+        {
+            try
+            {
+                var json = File.ReadAllText(filePath);
+                var itemData = JsonSerializer.Deserialize<ItemJsonSchema>(json);
+
+                if (itemData == null)
                 {
-                    Console.WriteLine($"[ItemManager] Failed to load item from {file}: {ex.Message}");
+                    Raylib.TraceLog(TraceLogLevel.Warning, $"[ItemManager] Empty or invalid JSON in file: {filePath}");
+                    return;
                 }
+
+                var item = CreateItemFromJson(itemData);
+                if (item == null)
+                {
+                    Raylib.TraceLog(TraceLogLevel.Warning, $"[ItemManager] Failed to create item from schema in: {filePath}");
+                    return;
+                }
+
+                RegisteredItems[item.ItemIdentifier] = item;
+                Raylib.TraceLog(TraceLogLevel.Info, $"[ItemManager] Loaded item: {item.ItemName}");
+            }
+            catch (Exception ex)
+            {
+                Raylib.TraceLog(TraceLogLevel.Error, $"[ItemManager] Failed to load item from {filePath}: {ex.Message}");
             }
         }
 
@@ -47,7 +63,7 @@ namespace NeonDreams
         {
             if (!uint.TryParse(data.Id, out uint parsedId))
             {
-                Console.WriteLine($"[ItemManager] Invalid ID format for item: {data.Name}");
+                Raylib.TraceLog(TraceLogLevel.Error, $"[ItemManager] Invalid ID format for item: {data.Name}");
                 return null;
             }
 
@@ -65,7 +81,7 @@ namespace NeonDreams
             {
                 if (!Enum.TryParse(data.Equip_Slot, true, out ItemBaseAttributes equipSlot))
                 {
-                    Console.WriteLine($"[ItemManager] Invalid equip slot for armour: {data.Equip_Slot}");
+                    Raylib.TraceLog(TraceLogLevel.Error, $"[ItemManager] Invalid equip slot for armour: {data.Equip_Slot}");
                     return null;
                 }
 
@@ -86,7 +102,6 @@ namespace NeonDreams
             public bool? Sellable { get; set; }
             public uint? Sell_Value { get; set; }
             public string Texture { get; set; } = "";
-
             public uint? Damage { get; set; }
             public uint? Defense { get; set; }
             public string? Equip_Slot { get; set; }

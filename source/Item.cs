@@ -9,16 +9,10 @@ using System.Text.Json;
 
 namespace NeonDreams
 {
-    // From the base Item class all ingame item types are derived and implemented
-    public enum ItemTypes
-    {
-        ITEM_WEAPON,        // 0
-        ITEM_MATERIAL,      // 1
-        ITEM_UNUSED_CURRENCY,      // 2
-        ITEM_WEARABLE,      // 3
-    }
+    // Turns out we can remove this enum since the classes handle the weapon types better. 
 
     // This gets a tad more granular with descriptions before getting into type-specific JSON
+    // Items can have more than one base attribute, but things will get weird if there are conflicts
     public enum ItemBaseAttributes
     {
         WEARABLE_HEAD,      // 0
@@ -40,7 +34,6 @@ namespace NeonDreams
         internal bool ItemSellable { get; set; }
         internal uint ItemSellValue { get; set; }
 
-        #pragma warning disable CS8618
         public Item(string? name, string? desc, string assetPath, uint id, bool sellable, uint value)
         {
             ItemName = name;
@@ -50,7 +43,6 @@ namespace NeonDreams
             ItemSellable = sellable;
             ItemSellValue = value;
         }
-        #pragma warning restore CS8618
     }
 
     public class Weapon : Item
@@ -80,7 +72,8 @@ namespace NeonDreams
 
     public class Material : Item
     {
-        public Material(string? name, string? desc, string assetPath, uint id, bool sellable, uint value) : base(name, desc, assetPath, id, sellable, value)
+        public Material(string? name, string? desc, string assetPath, uint id, bool sellable, uint value) 
+            : base(name, desc, assetPath, id, sellable, value)
         {
             
         }

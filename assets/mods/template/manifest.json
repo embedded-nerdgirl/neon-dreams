@@ -1,0 +1,8 @@
+{
+    "name": "",
+    "mod_id": "",
+    "author": "",
+    "version": "",
+    "dependencies": [],
+    "entrypoint": "use_if_entry_is_not_init.lua"
+}
