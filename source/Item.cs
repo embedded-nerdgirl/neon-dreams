@@ -12,22 +12,22 @@ namespace NeonDreams
     // From the base Item class all ingame item types are derived and implemented
     public enum ItemTypes
     {
-        ITEM_WEAPON,
-        ITEM_MATERIAL,
-        ITEM_CURRENCY,
-        ITEM_WEARABLE,
+        ITEM_WEAPON,        // 0
+        ITEM_MATERIAL,      // 1
+        ITEM_UNUSED_CURRENCY,      // 2
+        ITEM_WEARABLE,      // 3
     }
 
     // This gets a tad more granular with descriptions before getting into type-specific JSON
     public enum ItemBaseAttributes
     {
-        WEARABLE_HEAD,
-        WEARABLE_CHEST,
-        WEARABLE_LEGS,
-        WEAPON_MELEE,
-        WEAPON_MAGIC,
-        IS_SELLABLE,
-        IS_UNSELLABLE, 
+        WEARABLE_HEAD,      // 0
+        WEARABLE_CHEST,     // 1
+        WEARABLE_LEGS,      // 2
+        WEAPON_MELEE,       // 3
+        WEAPON_MAGIC,       // 4
+        IS_SELLABLE,        // 5
+        IS_UNSELLABLE,      // 6
     }
 
     public abstract class Item
@@ -35,62 +35,57 @@ namespace NeonDreams
         // Base item data, exists on every item that exists
         internal string? ItemName { get; set; }
         internal string? ItemDesc { get; set; }
+        internal string ItemAssetPath { get; set; }
         internal uint ItemIdentifier { get; set; }
+        internal bool ItemSellable { get; set; }
+        internal uint ItemSellValue { get; set; }
 
-        public Item(string? name, string? desc, uint id)
+        #pragma warning disable CS8618
+        public Item(string? name, string? desc, string assetPath, uint id, bool sellable, uint value)
         {
             ItemName = name;
             ItemDesc = desc;
+            ItemAssetPath = assetPath;
             ItemIdentifier = id;
-
-            if (ItemName == null)
-                ItemName = "ITEM";
-            if (ItemDesc == null)
-                ItemDesc = "This item does not have a description.";
+            ItemSellable = sellable;
+            ItemSellValue = value;
         }
+        #pragma warning restore CS8618
     }
 
     public class Weapon : Item
     {
-        private uint WeaponDamage { get; set; }
+        public uint WeaponDamage { get; private set; }
 
-        public Weapon(string? name, string? desc, uint id) : base(name, desc, id)
+        public Weapon(string? name, string? desc, string assetPath, uint id, bool sellable, uint value, uint damage)
+            : base(name, desc, assetPath, id, sellable, value)
         {
-
+            WeaponDamage = damage;
         }
     }
 
     public class Armour : Item
     {
-        private uint ArmourDefense { get; set; }
-        private uint ArmourEquipSlot { get; set; }
-        public Armour(string? name, string? desc, uint id) : base(name, desc, id)
+        public uint ArmourDefense { get; private set; }
+        public ItemBaseAttributes ArmourEquipSlot { get; private set; }
+
+        public Armour(string? name, string? desc, string assetPath, uint id, bool sellable, uint value, uint defense, ItemBaseAttributes equipSlot)
+            : base(name, desc, assetPath, id, sellable, value)
         {
-            
+            ArmourDefense = defense;
+            ArmourEquipSlot = equipSlot;
         }
     }
+
 
     public class Material : Item
     {
-        public Material(string? name, string? desc, uint id) : base(name, desc, id)
+        public Material(string? name, string? desc, string assetPath, uint id, bool sellable, uint value) : base(name, desc, assetPath, id, sellable, value)
         {
             
         }
     }
 
-    // This is a strange one, maybe currency should be handled differently...
-    // todo: maybe not do this?
-    public class Coin : Item
-    {
-        public Coin(string? name, string? desc, uint id) : base(name, desc, id)
-        {
-            
-        }
-    }
-
-    // Now this mess can stay quiet and untouched until the item schemas are intact, ready, and finalized
-    internal class ItemManager
-    {
-
-    }
+    // Currency is handled in `currency.cs` now
+    // And the item manager in ItemMgr.cs
 }
